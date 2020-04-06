@@ -2,15 +2,18 @@ import numpy as np
 import PIL.Image
 import os
 import scipy
+from matplotlib.pyplot import imread, imsave
+from skimage.transform import resize
+
 
 """Helper-functions to load MSCOCO DB"""
 # borrowed from https://github.com/lengstrom/fast-style-transfer/blob/master/src/utils.py
 def get_img(src, img_size=False):
-   img = scipy.misc.imread(src, mode='RGB')
+   img = imread(src)
    if not (len(img.shape) == 3 and img.shape[2] == 3):
        img = np.dstack((img,img,img))
    if img_size != False:
-       img = scipy.misc.imresize(img, img_size)
+       img = resize(img, img_size)
    return img
 
 def get_files(img_dir):
@@ -47,10 +50,10 @@ def load_image(filename, shape=None, max_size=None):
         size = size.astype(int)
 
         # Resize the image.
-        image = image.resize(size, PIL.Image.LANCZOS) # PIL.Image.LANCZOS is one of resampling filter
+        image = resize(size, PIL.Image.LANCZOS) # PIL.Image.LANCZOS is one of resampling filter
 
     if shape is not None:
-        image = image.resize(shape, PIL.Image.LANCZOS) # PIL.Image.LANCZOS is one of resampling filter
+        image = resize(shape, PIL.Image.LANCZOS) # PIL.Image.LANCZOS is one of resampling filter
 
     # Convert to numpy floating-point array.
     return np.float32(image)
